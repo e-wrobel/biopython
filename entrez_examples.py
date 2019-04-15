@@ -1,7 +1,5 @@
 import re
 from collections import Counter
-import plotly.plotly as py
-import plotly.tools as tls
 import matplotlib.pyplot as plt
 
 # They might be some issues here so...
@@ -23,10 +21,8 @@ class BioScraper(object):
     def get_data(self, biodatabase, bioterm):
         """
         Gets data from Emrez database
-
         :param biodatabase: Emrez database
         :param bioterm: Given term
-
         :return: histogram
         """
 
@@ -63,25 +59,23 @@ class BioScraper(object):
 
         return years_statistics
 
-    def plot_histogram(self, years_statistics, outputfile):
+    def plot_histogram(self, years_statistics):
         """
-        Plots histogram at the basis of given data list and stores it into file.
-
+        Plots histogram at the basis of given data list.
         :param years_statistics: Statistics for years
-        :param outputfile: Output filename
         """
 
+        plt.hist(years_statistics, normed=True)
+        plt.ylabel('Histogram');
         plt.hist(years_statistics)
         plt.title("Statistics for years")
         plt.xlabel("Value")
         plt.ylabel("Frequency")
+        plt.show()
 
-        fig = plt.gcf()
-        plotly_fig = tls.mpl_to_plotly( fig )
-        py.iplot(plotly_fig, filename=outputfile)
 
 if __name__ == "__main__":
 
     b = BioScraper("Marcin@example.com")
     histogram_data = b.get_data('pubmed', 'biopython')
-    b.plot_histogram(histogram_data, 'output.png')
+    b.plot_histogram(histogram_data)
